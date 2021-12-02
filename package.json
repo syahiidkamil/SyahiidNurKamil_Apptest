@@ -10,13 +10,16 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.2.5",
     "axios": "^0.24.0",
     "lodash": "^4.17.21",
     "react": "17.0.2",
     "react-native": "0.66.3",
     "react-native-dotenv": "^3.3.0",
     "react-redux": "^7.2.6",
-    "redux": "^4.1.2"
+    "redux": "^4.1.2",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
