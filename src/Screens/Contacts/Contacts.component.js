@@ -6,32 +6,16 @@ import {
   Text,
   Image,
   Button,
-  Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import validator from 'validator';
 
 import {fetchContacts} from '../../Utils/API/contact.api.util';
 import {Images} from '../../Assets';
-
-const CardComponent = props => (
-  <Pressable
-    style={{
-      backgroundColor: 'white',
-      borderRadius: 10,
-      marginTop: 20,
-      padding: 12,
-      flexDirection: 'row',
-      alignItems: 'center',
-    }}
-    onLongPress={() => {
-      props.navigation.navigate('Detail', {item: props.item});
-    }}
-    delayLongPress={100}>
-    {props.children}
-  </Pressable>
-);
+import CardComponent from '../../Components/CardComponent';
 
 const ContactComponent = props => {
+  const [isLoading, setIsLoading] = React.useState(true);
   const ImageCircle = props => {
     const imageSource = validator.isURL(props.imageUrl)
       ? {
@@ -60,11 +44,21 @@ const ContactComponent = props => {
         </Text>
         {item.age && <Text>{item.age} years old</Text>}
       </View>
+      <Image
+        style={{
+          height: 20,
+          width: 20,
+          marginRight: 10,
+          position: 'absolute',
+          right: 20,
+        }}
+        source={Images.chevron_right}
+      />
     </CardComponent>
   );
 
   const renderAddButton = () => (
-    <View style={{position: 'absolute', bottom: 20, alignSelf: 'center'}}>
+    <View style={{position: 'absolute', bottom: 50, alignSelf: 'center'}}>
       <Button
         color="#31814c"
         title="Add Contact +"
@@ -83,6 +77,7 @@ const ContactComponent = props => {
     } catch (error) {
       // error
     } finally {
+      setIsLoading(false);
       props.actions.updateContacts(contacts);
     }
   };
@@ -95,16 +90,19 @@ const ContactComponent = props => {
   return (
     <View styles={styles.container}>
       <FlatList
-        style={{
-          backgroundColor: '#00a4de',
-          paddingHorizontal: 20,
-          height: '100%',
-        }}
+        style={styles.contactList}
         data={props.contacts}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
       {renderAddButton()}
+      {isLoading && (
+        <ActivityIndicator
+          style={styles.activityIndicator}
+          size="large"
+          color="#00ff00"
+        />
+      )}
     </View>
   );
 };
@@ -117,6 +115,20 @@ const styles = StyleSheet.create({
   },
   textCenter: {
     textAlign: 'center',
+  },
+  activityIndicator: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  contactList: {
+    backgroundColor: '#00a4de',
+    paddingHorizontal: 20,
+    height: '100%',
   },
 });
 

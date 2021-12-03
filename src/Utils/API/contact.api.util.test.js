@@ -1,7 +1,4 @@
-// @flow
-
 import {fetchContacts} from './contact.api.util';
-import axios from 'axios';
 
 jest.mock('axios', () => ({
   create: jest.fn().mockReturnValue({
